@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MonsterData" load_steps=2 format=3 uid="uid://d322p4wy111l7"]
+
+[ext_resource type="Script" uid="uid://bt7dv3kl2l3gd" path="res://Data/MonsterData.gd" id="1_k8sim"]
+
+[resource]
+script = ExtResource("1_k8sim")
+name = "Simple Goblin"
+damage = 1
+metadata/_custom_type_script = "uid://bt7dv3kl2l3gd"
