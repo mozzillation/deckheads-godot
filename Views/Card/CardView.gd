@@ -4,21 +4,31 @@ class_name CardView
 
 var card: CardInstance
 
+enum DIRECTIONS {
+	UP,
+	DOWN
+}
+
 # Idle animation
-@export var bob_amplitude := 8.0        # px
+@export var bob_amplitude := 4.0        # px
 @export var bob_speed := 1.5            # rad/sec
-@export var rot_amplitude := 8.0         # degrees
+@export var rot_amplitude := 4.0         # degrees
+
+# Enter animation
+@export var enter_direction: = DIRECTIONS.UP
+@export var enter_amplitude := 80
 
 # Shake on reveal animation
-@export var reveal_shake_strength := 8.0
-@export var reveal_shake_duration := 0.18
-@export var reveal_shake_rot := 3.0
+@export var reveal_shake_strength := 4.0
+@export var reveal_shake_duration := 0.25
+@export var reveal_shake_rot := 10.0
 
 # Aliases
 @onready var root: Control = %CardRoot
 @onready var sides: Control = %CardSides
 @onready var face: TextureRect = %CardFace
 @onready var back: TextureRect = %CardBack
+@onready var shadow: TextureRect = %Shadow
 @onready var rankLabel: Label = %RankLabel
 
 # Animation helpers
@@ -28,14 +38,13 @@ var _phase := randf() * TAU
 var _base_root_position: Vector2
 var _base_sides_position: Vector2
 
+
+func _ready(): 
+	pass
+	
 func _process(delta):
-	_time += delta * bob_speed
-
-	var y_offset = sin(_time + _phase) * bob_amplitude 
-	var rot = sin(_time * 0.8 + _phase) * rot_amplitude
-
-	sides.position = _base_sides_position + Vector2(0, y_offset)
-	sides.rotation_degrees = rot
+	play_idle_animation(delta)
+	
 
 func bind(card_instance: CardInstance):
 	card = card_instance
@@ -43,7 +52,6 @@ func bind(card_instance: CardInstance):
 	play_enter_animation()
 	
 	card.connect("card_revealed", Callable.create(self, "_on_card_revealed"))
-
 
 # Update Visual
 func _update_visual():
@@ -71,64 +79,65 @@ func _on_card_revealed(card_instance: CardInstance):
 	_update_visual()
 	play_reveal_shake()
 
+func play_idle_animation(_delta: float):
+	_time += _delta * bob_speed
+
+	var y_offset = sin(_time + _phase) * bob_amplitude 
+	var rot = sin(_time * 1 + _phase) * rot_amplitude
+	
+	sides.position = _base_sides_position + Vector2(0, y_offset)
+	sides.rotation_degrees = rot
+
 
 func play_enter_animation():
+	var offset := enter_amplitude * (-1 if enter_direction == DIRECTIONS.UP else 1)
 
-	_base_root_position = root.position
-	root.scale = Vector2(0.5, 0.5)
-	root.position = _base_root_position + Vector2(0, 100)
+	root.scale = Vector2(0.6, 0.6)
+	root.position = Vector2(0, offset)
 
-	var tween = create_tween()\
-	.set_trans(Tween.TRANS_EXPO)\
-	.set_ease(Tween.EASE_OUT)
-	
-	tween.tween_property(root, "scale", Vector2.ONE, 0.4)
-	tween.parallel().tween_property(root, "position", _base_root_position, 0.4)
-	
-	# Normalize transforms
-	tween.finished.connect(func():
-		root.rotation_degrees = 0
-		root.scale = Vector2.ONE
-	)
+	create_tween() \
+		.set_trans(Tween.TRANS_EXPO) \
+		.set_ease(Tween.EASE_OUT) \
+		.tween_property(root, "scale", Vector2.ONE, 0.2)
+
+	create_tween() \
+		.set_trans(Tween.TRANS_EXPO) \
+		.set_ease(Tween.EASE_OUT) \
+		.tween_property(root, "position", Vector2.ZERO, 0.2)
 
 func play_reveal_shake():
-	var tween = create_tween()
-	tween.set_ease(Tween.EASE_OUT)
-	tween.set_trans(Tween.TRANS_SINE)
+	var tween = create_tween()\
+	.set_ease(Tween.EASE_OUT)\
+	.set_trans(Tween.TRANS_ELASTIC)
 
 	# horizontal shake
 	tween.tween_property(
 		root,
-		"position:x",
-		_base_root_position.x + reveal_shake_strength,
+		"position:y",
+		_base_root_position.y + reveal_shake_strength,
 		reveal_shake_duration * 0.25
 	)
 
 	tween.tween_property(
 		root,
-		"position:x",
-		_base_root_position.x - reveal_shake_strength,
+		"position:y",
+		_base_root_position.y - reveal_shake_strength,
 		reveal_shake_duration * 0.25
 	)
 
 	tween.tween_property(
 		root,
-		"position:x",
-		_base_root_position.x,
+		"position:y",
+		_base_root_position.y,
 		reveal_shake_duration * 0.5
 	)
 
-	# tiny rotational kick
-	tween.parallel().tween_property(
-		root,
-		"rotation_degrees",
-		reveal_shake_rot,
-		reveal_shake_duration * 0.25
-	)
+func animate_layout_delta(delta: Vector2):
+	# Counteract container snap
+	root.position += delta
+	
+	var tween = create_tween()\
+	.set_ease(Tween.EASE_OUT)\
+	.set_trans(Tween.TRANS_EXPO)
 
-	tween.parallel().tween_property(
-		root,
-		"rotation_degrees",
-		0.0,
-		reveal_shake_duration * 0.5
-	)
+	tween.tween_property(root, "position", Vector2.ZERO, 0.2)

@@ -43,4 +43,3 @@ func draw(is_face_down: bool = false) -> CardInstance:
 	
 	# Return instance with additional props
 	return CardInstance.new(card_data, is_face_down)
-	
