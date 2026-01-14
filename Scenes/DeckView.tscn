@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://c74yftip6v27u"]
+
+[ext_resource type="Script" uid="uid://d3fgnh732daqh" path="res://Views/Deck/DeckView.gd" id="1_j3l3j"]
+[ext_resource type="Texture2D" uid="uid://e5ene1jmxjbg" path="res://assets/backface.png" id="2_x0dmn"]
+
+[node name="DeckView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_j3l3j")
+
+[node name="Stack" type="Control" parent="."]
+custom_minimum_size = Vector2(64, 80)
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CardBack" type="TextureRect" parent="Stack"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_x0dmn")
+
+[node name="CardBack2" type="TextureRect" parent="Stack"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 80.0
+texture = ExtResource("2_x0dmn")
+
+[node name="CardBack3" type="TextureRect" parent="Stack"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 80.0
+texture = ExtResource("2_x0dmn")

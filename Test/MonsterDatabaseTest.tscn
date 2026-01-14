@@ -1,10 +1,32 @@
-[gd_scene load_steps=4 format=3 uid="uid://73gm265gb1fp"]
+[gd_scene load_steps=7 format=3 uid="uid://73gm265gb1fp"]
 
 [ext_resource type="Script" uid="uid://b0616r6yi72tn" path="res://MonsterDatabaseTest.gd" id="1_o1mgq"]
 [ext_resource type="Script" uid="uid://dcsr7selro511" path="res://Views/HandView.gd" id="2_7niq3"]
 [ext_resource type="PackedScene" uid="uid://tncg405tam2h" path="res://Scenes/CardScene.tscn" id="3_2ns47"]
+[ext_resource type="Shader" uid="uid://dxudyhk6jduex" path="res://assets/shaders/crt.gdshader" id="4_f34ew"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d6f4j"]
+shader = ExtResource("4_f34ew")
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/scan_line_amount = 0.5
+shader_parameter/warp_amount = 1.0
+shader_parameter/vignette_amount = 0.5
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/grille_amount = 0.05
+shader_parameter/brightness_boost = 1.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f34ew"]
+shader = ExtResource("4_f34ew")
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/scan_line_amount = 0.5
+shader_parameter/warp_amount = 0.0
+shader_parameter/vignette_amount = 0.5
+shader_parameter/vignette_intensity = 0.3
+shader_parameter/grille_amount = 0.05
+shader_parameter/brightness_boost = 1.2
 
 [node name="Control" type="Control"]
+material = SubResource("ShaderMaterial_d6f4j")
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +34,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_o1mgq")
+
+[node name="CanvasEffects" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="CRTEffect" type="ColorRect" parent="CanvasEffects"]
+top_level = true
+material = SubResource("ShaderMaterial_f34ew")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="HandsContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -25,7 +60,7 @@ alignment = 1
 [node name="MonsterHandView" type="HBoxContainer" parent="HandsContainer"]
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = -4
 alignment = 1
 script = ExtResource("2_7niq3")
 card_scene = ExtResource("3_2ns47")
@@ -35,7 +70,7 @@ metadata/_custom_type_script = "uid://dcsr7selro511"
 y_sort_enabled = true
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = -4
 alignment = 1
 script = ExtResource("2_7niq3")
 card_scene = ExtResource("3_2ns47")
