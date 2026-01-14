@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=3 uid="uid://tncg405tam2h"]
+
+[ext_resource type="Script" uid="uid://dqdh4wb8w4cj4" path="res://Views/Card/CardView.gd" id="1_dclqd"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_t5ees"]
+
+[node name="CardView" type="Control"]
+custom_minimum_size = Vector2(64, 80)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 64.0
+offset_bottom = 80.0
+pivot_offset = Vector2(32, 40)
+size_flags_vertical = 4
+script = ExtResource("1_dclqd")
+
+[node name="CardRoot" type="Control" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 80)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 40)
+
+[node name="CardSides" type="Control" parent="CardRoot"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 80)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 40)
+
+[node name="CardFace" type="TextureRect" parent="CardRoot/CardSides"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 80)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 40)
+texture = SubResource("PlaceholderTexture2D_t5ees")
+
+[node name="CardBack" type="TextureRect" parent="CardRoot/CardSides"]
+unique_name_in_owner = true
+modulate = Color(0, 1, 1, 1)
+show_behind_parent = true
+custom_minimum_size = Vector2(64, 80)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 40)
+texture = SubResource("PlaceholderTexture2D_t5ees")
+
+[node name="RankLabel" type="Label" parent="CardRoot/CardSides"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Rank"
+horizontal_alignment = 1
+vertical_alignment = 1
