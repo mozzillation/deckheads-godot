@@ -1,3 +1,36 @@
-[gd_scene format=3 uid="uid://c5uc4ww8dsbd5"]
+[gd_scene load_steps=3 format=3 uid="uid://c5uc4ww8dsbd5"]
 
-[node name="CardBackScene" type="Node2D"]
+[ext_resource type="Texture2D" uid="uid://e5ene1jmxjbg" path="res://assets/backface.png" id="1_4dub0"]
+[ext_resource type="Texture2D" uid="uid://bugqfjdw4hfqj" path="res://assets/shadow.png" id="2_afdav"]
+
+[node name="CardBackScene" type="Control"]
+custom_minimum_size = Vector2(64, 80)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 64.0
+offset_bottom = 80.0
+pivot_offset = Vector2(32, 40)
+
+[node name="CardBack" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 40)
+texture = ExtResource("1_4dub0")
+
+[node name="Shadow" type="TextureRect" parent="CardBack"]
+z_index = -2
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 80)
+texture = ExtResource("2_afdav")

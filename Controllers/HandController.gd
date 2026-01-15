@@ -4,17 +4,21 @@ class_name HandController
 
 # Create signals
 signal card_added(card: CardInstance)
+signal score_update(who: HandView.WHO)
+
 
 var cards: Array[CardInstance] = []
 
-func add(card: CardInstance) -> void:
+func add(card: CardInstance, who: HandView.WHO) -> void:
 	cards.append(card)
 	emit_signal("card_added", card)  # for new instantiation
+	emit_signal("score_update", who)
 
-func reveal() -> void:
+func reveal(who: HandView.WHO) -> void:
 	for card in cards:
 		if card.is_face_down:
 			card.reveal()
+			emit_signal("score_update", who)
 
 # Get hand score
 func get_score() -> int: 
@@ -22,10 +26,8 @@ func get_score() -> int:
 	var aces : int = 0
 
 	for card in cards:
-		if card.is_face_down:
-			return 0
-		
-		var value = card.data.get_value()
+				
+		var value = 0 if card.is_face_down else card.data.get_value() 
 		var rank = card.data.rank
 	
 		total += value

@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://73gm265gb1fp"]
+[gd_scene load_steps=8 format=3 uid="uid://73gm265gb1fp"]
 
 [ext_resource type="Script" uid="uid://b0616r6yi72tn" path="res://MonsterDatabaseTest.gd" id="1_o1mgq"]
 [ext_resource type="Script" uid="uid://dcsr7selro511" path="res://Views/HandView.gd" id="2_7niq3"]
 [ext_resource type="PackedScene" uid="uid://tncg405tam2h" path="res://Scenes/CardScene.tscn" id="3_2ns47"]
 [ext_resource type="Shader" uid="uid://dxudyhk6jduex" path="res://assets/shaders/crt.gdshader" id="4_f34ew"]
+[ext_resource type="PackedScene" uid="uid://c74yftip6v27u" path="res://Scenes/DeckView.tscn" id="6_y5xc0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d6f4j"]
 shader = ExtResource("4_f34ew")
@@ -20,12 +21,12 @@ shader = ExtResource("4_f34ew")
 shader_parameter/resolution = Vector2(640, 480)
 shader_parameter/scan_line_amount = 0.5
 shader_parameter/warp_amount = 0.0
-shader_parameter/vignette_amount = 0.5
-shader_parameter/vignette_intensity = 0.3
+shader_parameter/vignette_amount = 0.0
+shader_parameter/vignette_intensity = 0.0
 shader_parameter/grille_amount = 0.05
 shader_parameter/brightness_boost = 1.2
 
-[node name="Control" type="Control"]
+[node name="LevelScene" type="Control"]
 material = SubResource("ShaderMaterial_d6f4j")
 layout_mode = 3
 anchors_preset = 15
@@ -36,7 +37,6 @@ grow_vertical = 2
 script = ExtResource("1_o1mgq")
 
 [node name="CanvasEffects" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="CRTEffect" type="ColorRect" parent="CanvasEffects"]
 top_level = true
@@ -49,6 +49,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="HandsContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -63,6 +64,7 @@ layout_mode = 2
 theme_override_constants/separation = -4
 alignment = 1
 script = ExtResource("2_7niq3")
+who = 1
 card_scene = ExtResource("3_2ns47")
 metadata/_custom_type_script = "uid://dcsr7selro511"
 
@@ -77,14 +79,6 @@ card_scene = ExtResource("3_2ns47")
 enter_direction = 1
 metadata/_custom_type_script = "uid://dcsr7selro511"
 
-[node name="HitButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 51.0
-offset_top = 347.0
-offset_right = 85.0
-offset_bottom = 378.0
-text = "HIT"
-
 [node name="StandButton" type="Button" parent="."]
 layout_mode = 0
 offset_left = 147.0
@@ -92,3 +86,22 @@ offset_top = 347.0
 offset_right = 181.0
 offset_bottom = 378.0
 text = "STAND"
+
+[node name="DeckView" parent="." instance=ExtResource("6_y5xc0")]
+unique_name_in_owner = true
+layout_mode = 1
+max_visible_cards = 6
+stack_offset = Vector2(0, -2)
+
+[node name="PlayerScoreLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 123.0
+offset_right = 40.0
+offset_bottom = 146.0
+
+[node name="MonsterScoreLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

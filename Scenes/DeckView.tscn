@@ -1,37 +1,67 @@
-[gd_scene load_steps=3 format=3 uid="uid://c74yftip6v27u"]
+[gd_scene load_steps=5 format=3 uid="uid://c74yftip6v27u"]
 
 [ext_resource type="Script" uid="uid://d3fgnh732daqh" path="res://Views/Deck/DeckView.gd" id="1_j3l3j"]
-[ext_resource type="Texture2D" uid="uid://e5ene1jmxjbg" path="res://assets/backface.png" id="2_x0dmn"]
+[ext_resource type="PackedScene" uid="uid://c5uc4ww8dsbd5" path="res://Scenes/CardBackScene.tscn" id="2_j3l3j"]
+[ext_resource type="FontFile" uid="uid://bytxbkvykyft" path="res://assets/fonts/dungeon-mode.ttf" id="3_x0dmn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_l4c8a"]
+font = ExtResource("3_x0dmn")
+font_size = 9
+font_color = Color(0.07450981, 0.07450981, 0.078431375, 1)
+shadow_size = 4
+shadow_color = Color(1, 1, 1, 1)
+shadow_offset = Vector2(0, 0)
 
 [node name="DeckView" type="Control"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 88)
 layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -104.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(32, 44)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 4
+script = ExtResource("1_j3l3j")
+card_back_scene = ExtResource("2_j3l3j")
+
+[node name="Stack" type="Control" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 80)
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_j3l3j")
+pivot_offset = Vector2(32, 40)
+mouse_filter = 1
 
-[node name="Stack" type="Control" parent="."]
-custom_minimum_size = Vector2(64, 80)
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="CardBack" type="TextureRect" parent="Stack"]
+[node name="StackCountLabel" type="Label" parent="Stack"]
+unique_name_in_owner = true
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("2_x0dmn")
-
-[node name="CardBack2" type="TextureRect" parent="Stack"]
-layout_mode = 0
+offset_top = 10.0
 offset_right = 64.0
-offset_bottom = 80.0
-texture = ExtResource("2_x0dmn")
+offset_bottom = 18.0
+text = "00 of 54"
+label_settings = SubResource("LabelSettings_l4c8a")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="CardBack3" type="TextureRect" parent="Stack"]
+[node name="CardBackScene" parent="Stack" instance=ExtResource("2_j3l3j")]
+visible = false
 layout_mode = 0
-offset_right = 64.0
-offset_bottom = 80.0
-texture = ExtResource("2_x0dmn")
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

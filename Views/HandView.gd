@@ -2,10 +2,15 @@ extends HBoxContainer
 
 class_name HandView
 
+enum WHO {
+	PLAYER, 
+	MONSTER
+}
+
 var card_views: Array[CardView] = []
 var card_positions := {}
 
-
+@export var who:= WHO.PLAYER
 @export var card_scene: PackedScene
 @export var enter_direction := CardView.DIRECTIONS.UP
 
@@ -45,6 +50,7 @@ func _on_card_added(card: CardInstance):
 	view.enter_direction = enter_direction
 	view.bind(card)
 	card_views.append(view)
+	#emit_signal("score_updated", who)
 	# listen directly to the card
 
 #func _on_hand_changed(hand: HandController):

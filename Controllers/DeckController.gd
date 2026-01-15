@@ -2,6 +2,8 @@ extends RefCounted
 
 class_name DeckController
 
+signal card_drawn(card: CardInstance)
+
 var cards: Array[CardData] = []
 
 func _init():
@@ -40,6 +42,9 @@ func draw(is_face_down: bool = false) -> CardInstance:
 	
 	# Get & remove first card
 	var card_data: CardData = cards.pop_back()
+	var card_instance: CardInstance = CardInstance.new(card_data, is_face_down)
+	
+	emit_signal("card_drawn", card_instance)
 	
 	# Return instance with additional props
-	return CardInstance.new(card_data, is_face_down)
+	return card_instance

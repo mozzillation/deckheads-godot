@@ -43,12 +43,9 @@ var _suit_atlas = AtlasTexture.new()
 var _time := 0.0
 var _phase := randf() * TAU
 
-var _base_motion_base_position: Vector2
-
 
 func _ready(): 
 	_suit_atlas.atlas = suit_atlas_source
-	pass
 
 	
 func _process(delta):
@@ -98,8 +95,9 @@ func _on_card_revealed(card_instance: CardInstance):
 		card_instance.data.get_rank(),
 		card_instance.data.get_suit()
 	])
-	_update_visual()
 	play_reveal_shake()
+
+
 
 func play_idle_animation(delta):
 	_time += delta * bob_speed
@@ -114,7 +112,7 @@ func play_idle_animation(delta):
 func play_enter_animation():
 	var offset := enter_amplitude * (-1 if enter_direction == DIRECTIONS.UP else 1)
 
-	motion_base.scale = Vector2(0.6, 0.6)
+	motion_base.scale = Vector2(0, 1)
 	motion_base.position = Vector2(0, offset)
 
 	create_tween() \
@@ -132,27 +130,19 @@ func play_reveal_shake():
 	.set_ease(Tween.EASE_OUT)\
 	.set_trans(Tween.TRANS_ELASTIC)
 
-	# horizontal shake
-	tween.tween_property(
-		motion_base,
-		"position:y",
-		_base_motion_base_position.y + reveal_shake_strength,
-		reveal_shake_duration * 0.25
+	
+	tween.tween_property(motion_base, "scale:x", 0.00, reveal_shake_duration * 0.25)\
+	.finished\
+	.connect(func():
+			_update_visual()
 	)
+	
+	tween.tween_property(
+		motion_base, "scale:x", 1.00, reveal_shake_duration * 0.5
+	)
+	
+	
 
-	tween.tween_property(
-		motion_base,
-		"position:y",
-		_base_motion_base_position.y - reveal_shake_strength,
-		reveal_shake_duration * 0.25
-	)
-
-	tween.tween_property(
-		motion_base,
-		"position:y",
-		_base_motion_base_position.y,
-		reveal_shake_duration * 0.5
-	)
 
 func update_shadow(bob: float):
 	shadow.rotation_degrees = bob * 4
